@@ -1,0 +1,60 @@
+/* Aplica el degradado al fondo de la página */
+body {
+    background: radial-gradient(circle, #ff9e9e, #ff6666, #fc3737);
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* Contenedor del login */
+.login-container {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+/* Logo */
+.logo-container img {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+/* Botón con el color sólido del antiguo fondo */
+#login-button {
+    background-color: #d64728; /* Color sólido */
+    border: none;
+    color: white;
+    transition: background 0.3s ease-in-out;
+}
+
+/* Hover del botón */
+#login-button:hover {
+    background-color: #b53d23; /* Un tono más oscuro para efecto hover */
+}
+
+.footer {
+    position: fixed; /* Lo fija en la parte inferior */
+    bottom: 0;
+    width: 100%;
+    background-color: #212529; /* Color oscuro */
+    color: white;
+    text-align: center;
+    padding: 10px 0;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: -5%;  /* Mueve la imagen un poco hacia arriba */
+    left: -5%; /* Mueve la imagen un poco hacia la izquierda */
+    width: 110%; /* Aumenta el tamaño para que parezca más alejada */
+    height: 110%;
+    background: url('../img/siua.jpg') center/cover;
+    filter: blur(5px); /* Reduce el desenfoque */
+    z-index: -1; /* Mantiene la imagen detrás del contenido */
+    opacity: 0.6; /* Ajusta la opacidad si es necesario */
+}

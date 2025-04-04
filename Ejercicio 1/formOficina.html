@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>CRUD Oficina</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+
+  <script src="js/auth.js"></script>
+  <script>verificarAutenticacion()</script>
+
+  <link rel="stylesheet" href="css/formOficina.css">
+
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand ms-auto" href="#"><i class="bi bi-info-square"></i></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav" id="navbarMenu"></ul>
+      <button class="btn btn-danger ms-auto" onclick="logout()"> <i class="bi bi-power"></i> Cerrar Sesión </button>
+    </div>
+  </div>
+</nav>
+
+<script src="js/navbar.js"></script>
+
+<div class="container mt-4">
+  <h1 class="text-center mb-4">CRUD de Oficina</h1>
+  <form class="needs-validation" novalidate onsubmit="guardarOficina(event)">
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label for="nombre">Nombre</label>
+        <input id="nombre" class="form-control" required />
+        <div class="invalid-feedback">El campo es obligatorio</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="capacidad">Capacidad máxima</label>
+        <input type="number" id="capacidad" class="form-control" required min="1" />
+        <div class="invalid-feedback">Ingrese un número válido</div>
+      </div>
+
+      <div class="col-md-6">
+        <label for="ubicacion">Coordenadas (lat,lng)</label>
+        <input id="ubicacion" class="form-control" placeholder="Ej: 10.0000,-84.0000" required />
+        <div class="invalid-feedback">Ingrese coordenadas válidas</div>
+      </div>
+
+      <div class="col-md-12">
+        <div id="map"></div>
+      </div>
+
+      <div class="col-md-12 text-center mt-4">
+        <button type="submit" class="btn btn-primary me-2">Guardar</button>
+        <button type="button" class="btn btn-secondary" onclick="window.location.href='listaOficina.html'">Cancelar</button>
+      </div>
+    </div>
+  </form>
+
+  <div class="alert alert-success alert-dismissible fade show d-none" id="alerta-exito" role="alert">
+    ¡Oficina guardada con éxito!
+    <button aria-label="Close" class="btn-close" data-bs-dismiss="alert" type="button"></button>
+  </div>
+
+  <div id="alerta-warning" class="alert alert-warning alert-dismissible fade show d-none" role="alert"> <!-- alerta de que se borró -->
+     La capacidad máxima es menor a la cantidad actual de personas ingresadas. Intente con un número mayor.
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+
+  <div id="alerta-danger" class="alert alert-danger alert-dismissible fade show d-none" role="alert"> <!-- alerta de que se borró -->
+    Oficina eliminada exitosamente.
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+
+</div>
+
+<footer class="bg-dark text-white text-center py-3 mt-5">
+  &copy; 2025 Progra IV - Todos los derechos reservados.
+</footer>
+
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDZXwLedsw-Nr5SZil_oDu_VFPap20h7TM&callback=initMap">
+</script>
+
+<script>
+  let map;
+  let marker;
+
+  function initMap() {
+    const defaultCoords = { lat: 10.0, lng: -84.0 };
+    map = new google.maps.Map(document.getElementById("map"), {
+      center: defaultCoords,
+      zoom: 8,
+    });
+
+    marker = new google.maps.Marker({
+      position: defaultCoords,
+      map: map,
+      draggable: true,
+    });
+
+    const ubicacionInput = document.getElementById("ubicacion");
+
+    ubicacionInput.addEventListener("input", () => {
+      const coords = ubicacionInput.value.split(",");
+      if (coords.length === 2) {
+        const lat = parseFloat(coords[0]);
+        const lng = parseFloat(coords[1]);
+        if (!isNaN(lat) && !isNaN(lng)) {
+          const newPosition = { lat, lng };
+          map.setCenter(newPosition);
+          marker.setPosition(newPosition);
+        }
+      }
+    });
+
+    map.addListener("click", function (e) {
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      const coords = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+      ubicacionInput.value = coords;
+      marker.setPosition({ lat, lng });
+    });
+
+    marker.addListener("dragend", function (e) {
+      const lat = e.latLng.lat();
+      const lng = e.latLng.lng();
+      ubicacionInput.value = `${lat.toFixed(6)},${lng.toFixed(6)}`;
+    });
+  }
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    cargarOficinas();
+  });
+</script>
+
+<script src="js/oficina.js"></script>
+
+</body>
+</html>

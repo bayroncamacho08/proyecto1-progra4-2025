@@ -1,0 +1,45 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1; /* Hace que el contenido principal ocupe el espacio disponible */
+}
+
+footer {
+    background: #222; /* Color de fondo */
+    color: white; /* Color del texto */
+    text-align: center;
+    padding: 15px 0;
+    width: 100%;
+}
+
+ table {
+     border-collapse: separate;
+     border-spacing: 0; /* Evita espacios entre celdas */
+     border-radius: 10px; /* Ajusta el radio de las esquinas */
+ }
+
+th, td {
+    border: 1px solid black;
+    padding: 8px; /* Da un poco de espacio dentro de las celdas */
+}
+
+th:first-child {
+    border-top-left-radius: 10px;
+}
+
+th:last-child {
+    border-top-right-radius: 10px;
+}
+
+tr:last-child td:first-child {
+    border-bottom-left-radius: 10px;
+}
+
+tr:last-child td:last-child {
+    border-bottom-right-radius: 10px;
+}
